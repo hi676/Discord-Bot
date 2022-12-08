@@ -43,8 +43,8 @@ async def on_message(message):
     print("MESSAGE")
     send = getclass(message.content)
     await message.channel.send(send)
-    # if send == "Got class":
-    #   await message.add_reaction('🎉')
+    if send == "Got class":
+      await message.add_reaction('🎉')
 
 
 
