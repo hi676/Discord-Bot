@@ -1,5 +1,6 @@
 from gevent import monkey
 monkey.patch_all()
+
 import os
 from coursesniper import getclass
 import discord
@@ -7,6 +8,7 @@ from alive import keep_alive
 import random
 from datetime import datetime
 from pytz import timezone
+from anagrams import anagrams
 
 client = discord.Client(intents=discord.Intents.all())
 
@@ -29,7 +31,10 @@ async def on_message(message):
   if "Joke" in message.content:
     jokes = open('jokes.txt').read().splitlines()
     await message.channel.send(random.choice(jokes).replace("<>", "\n"))
-  elif "Time" in message.content:
+  if "Word" in message.content:
+    await message.channel.send(
+      anagrams(message.content[message.content.find(" ") + 1:]))
+  if "Time" in message.content:
     tz = timezone('EST')
     await message.channel.send(datetime.now(tz).strftime("%I:%M:%S %p"))
   elif message.content.isnumeric() and len(message.content) != 5:
@@ -40,6 +45,8 @@ async def on_message(message):
     await message.channel.send(send)
     # if send == "Got class":
     #   await message.add_reaction('🎉')
+
+
 
 
 #     # print(message.content.isnumeric())
